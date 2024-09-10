@@ -136,3 +136,8 @@ func (m *m2mModel) parkStruct() error {
 
 	return nil
 }
+
+func (m *m2mModel) join(name string) *relationJoin {
+	return m._join(m.strct, name)
+}
+
