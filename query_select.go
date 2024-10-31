@@ -364,9 +364,19 @@ func (q *SelectQuery) addUnion(expr string, other *SelectQuery) *SelectQuery {
 //------------------------------------------------------------------------------
 
 func (q *SelectQuery) Join(join string, args ...interface{}) *SelectQuery {
-	q.joins = append(q.joins, joinQuery{
+	jq := joinQuery{
 		join: schema.SafeQuery(join, args),
-	})
+	}
+
+	if len(q.joins) > 0 {
+		for _, j := range q.joins {
+			if j.join.Query == jq.join.Query {
+				return q
+			}
+		}
+	}
+
+	q.joins = append(q.joins, jq)
 	return q
 }
 
